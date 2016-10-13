@@ -87,3 +87,10 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+actorbot_server/bin
+actorbot_server/include
+actorbot_server/lib
+actorbot_server/local
+actorbot_server/.idea
+actorbot_server/pip-selfcheck.json
