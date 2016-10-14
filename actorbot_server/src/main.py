@@ -2,6 +2,7 @@ import cherrypy
 import socket
 
 
+
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
@@ -17,3 +18,4 @@ class HelloWorld(object):
 
 cherrypy.server.socket_host = get_ip_address()
 cherrypy.quickstart(HelloWorld())
+#cherrypy.request.params[]
