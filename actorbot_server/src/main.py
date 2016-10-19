@@ -1,5 +1,6 @@
 import cherrypy
 import socket
+import string
 
 
 
@@ -9,13 +10,16 @@ def get_ip_address():
     return s.getsockname()[0]
 
 
-class HelloWorld(object):
+class ActorBot_Server(object):
+    def generate(self, b):
+        return b + "c"
+
     def index(self):
-        return "Hello World!"
+        return "testicles"
 
     index.exposed = True
+    generate.exposed = True
 
 
 cherrypy.server.socket_host = get_ip_address()
-cherrypy.quickstart(HelloWorld())
-#cherrypy.request.params[]
+cherrypy.quickstart(ActorBot_Server())
