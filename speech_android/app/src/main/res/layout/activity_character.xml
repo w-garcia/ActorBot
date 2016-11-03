@@ -17,20 +17,32 @@
         android:weightSum="1">
 
         <ImageButton
-            android:layout_width="109dp"
-            android:layout_height="93dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:id="@+id/imb_Speak"
             android:layout_gravity="center_horizontal"
-            />
+            android:src="@drawable/eyes3"
+            android:layout_weight="0"/>
 
         <TextView
-            android:layout_width="244dp"
-            android:layout_height="0dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Speak Now"
             android:id="@+id/txt_Result"
             android:layout_gravity="center_horizontal"
-            android:layout_weight="0.30"
-            android:textAlignment="center"/>
+            android:gravity="center"
+            android:singleLine="false"
+            android:padding="4dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txt_Response"
+            android:layout_weight="0.08"
+            android:gravity="center"
+            android:textColor="#04B4AE"
+            android:layout_gravity="center_horizontal"
+            android:padding="4dp"/>
 
     </LinearLayout>
 </RelativeLayout>

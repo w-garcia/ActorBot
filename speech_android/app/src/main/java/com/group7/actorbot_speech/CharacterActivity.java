@@ -1,7 +1,10 @@
 package com.group7.actorbot_speech;
 
+import android.app.PendingIntent;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.os.Handler;
+import android.os.ResultReceiver;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.widget.Toast;
 import org.apache.http.params.HttpParams;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,16 +29,20 @@ import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.spec.ECField;
 import java.util.ArrayList;
 
-public class CharacterActivity extends AppCompatActivity
+public class CharacterActivity extends AppCompatActivity implements CustomResultReceiver.Receiver
 {
     protected static final int RESULT_SPEECH = 1;
+    protected static final int RESULT_RESPONSE = 2;
 
     private ImageButton _btn_Speak;
     private TextView _txt_Result;
+    private TextView _txt_Response;
 
     private ArrayList<String> _context_history = new ArrayList<>();
+    private CustomResultReceiver _customResultReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,7 +50,11 @@ public class CharacterActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character);
 
+        _customResultReceiver = new CustomResultReceiver(new Handler());
+        _customResultReceiver.setReceiver(this);
+
         _txt_Result = (TextView) findViewById(R.id.txt_Result);
+        _txt_Response = (TextView) findViewById(R.id.txt_Response);
         _btn_Speak= (ImageButton) findViewById(R.id.imb_Speak);
 
         _btn_Speak.setOnClickListener(new View.OnClickListener()
@@ -62,7 +74,7 @@ public class CharacterActivity extends AppCompatActivity
                 }
                 catch (ActivityNotFoundException a)
                 {
-                    Toast t = Toast.makeText(getApplicationContext(), "Your device isn't supported.",Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(getApplicationContext(), "Your device isn't supported.", Toast.LENGTH_SHORT);
                     t.show();
                 }
 
@@ -70,52 +82,7 @@ public class CharacterActivity extends AppCompatActivity
         });
     }
 
-    public void sendContext(String c)
-    {
-        Log.i(getClass().getSimpleName(), "sendContext task: start");
 
-        URL url;
-        HttpURLConnection connection = null;
-
-        try
-        {
-            url = new URL("192.168.1.79:443");
-
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setDoOutput(true);
-            connection.setChunkedStreamingMode(0);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-            OutputStream out = new BufferedOutputStream(connection.getOutputStream());
-
-
-
-
-            InputStream in = connection.getInputStream();
-            InputStreamReader isw = new InputStreamReader(in);
-            int data = isw.read();
-            while (data != -1)
-            {
-                char current = (char) data;
-                data = isw.read();
-                System.out.print(current);
-            }
-
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally
-        {
-            if (connection != null)
-            {
-                connection.disconnect();
-            }
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -133,7 +100,12 @@ public class CharacterActivity extends AppCompatActivity
 
                     _txt_Result.setText(text.get(0));
                     _context_history.add(text.get(0));
-                    sendContext(text.get(0));
+
+                    // Start the response background service
+                    Intent intent = new Intent(this, ContextIntentService.class);
+                    intent.putExtra(ContextIntentService.CONTEXT_EXTRA, text.get(0));
+                    intent.putExtra(ContextIntentService.PENDING_RESULT_EXTRA, _customResultReceiver);
+                    startService(intent);
                 }
                 break;
 
@@ -165,5 +137,12 @@ public class CharacterActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData)
+    {
+        String response = resultData.getString("Response");
+        _txt_Response.setText(response);
     }
 }
