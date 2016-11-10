@@ -95,3 +95,6 @@ actorbot_server/local
 actorbot_server/.idea
 actorbot_server/pip-selfcheck.json
 actorbot_server/cherrypy
+actorbot_server/data/
+actorbot_server/share
+ubuntu-ranking-dataset-creator/
