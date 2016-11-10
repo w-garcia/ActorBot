@@ -98,3 +98,13 @@ actorbot_server/cherrypy
 actorbot_server/data/
 actorbot_server/share
 ubuntu-ranking-dataset-creator/
+
+#Android Studio
+speech_android/*.iml
+speech_android/.gradle
+speech_android/local.properties
+speech_android/.idea/workspace.xml
+speech_android/.idea/libraries
+speech_android/.DS_Store
+speech_android/build
+speech_android/captures
