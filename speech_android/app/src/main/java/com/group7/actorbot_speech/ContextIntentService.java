@@ -18,6 +18,7 @@ public class ContextIntentService extends IntentService {
 
     public static final String CONTEXT_EXTRA = "context";
     public static final String PENDING_RESULT_EXTRA = "pending_result";
+    public static final String RESPONSE_SERVER_IP = "response_server_ip";
     public static final String URL_EXTRA = "url";
 
     public static final int RESULT_CODE = 0;
@@ -33,9 +34,10 @@ public class ContextIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         String context = intent.getStringExtra(CONTEXT_EXTRA);
+        String ip = intent.getStringExtra(RESPONSE_SERVER_IP);
 
         HttpURLConnectionContext connect = new HttpURLConnectionContext();
-        String response = connect.sendContext(context);
+        String response = connect.sendContext(context, ip);
 
         ResultReceiver rec = intent.getParcelableExtra(PENDING_RESULT_EXTRA);
         Bundle b = new Bundle();
