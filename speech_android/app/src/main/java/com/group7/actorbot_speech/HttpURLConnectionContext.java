@@ -12,8 +12,7 @@ import java.net.URL;
  */
 public class HttpURLConnectionContext
 {
-
-    public String sendContext(String c, String ip)
+    public String sendContext(String c)
     {
         Log.i(getClass().getSimpleName(), "sendContext task: start");
 
@@ -24,7 +23,7 @@ public class HttpURLConnectionContext
         try
         {
             c = c.replaceAll(" ", "%20");
-            String url_text = String.format("http://%s/generate?phrase=%s", ip, c);
+            String url_text = String.format("http://192.168.1.77:8080/generate?phrase=%s", c);
             url = new URL(url_text);
 
             Log.d(getClass().getSimpleName(), url_text);
