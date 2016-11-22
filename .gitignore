@@ -97,6 +97,12 @@ actorbot_server/pip-selfcheck.json
 actorbot_server/cherrypy
 actorbot_server/data/
 actorbot_server/share
+actorbot_server/chatbot_retrieval/.idea/
+
+#Pycharm
+*.idea
+
+#Dataset
 ubuntu-ranking-dataset-creator/
 
 #Android Studio
