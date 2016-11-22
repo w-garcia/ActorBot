@@ -1,0 +1,3 @@
+[submodule "actorbot_server/chatbot-retrieval"]
+	path = actorbot_server/chatbot-retrieval
+	url = https://github.com/w-garcia/chatbot-retrieval.git
